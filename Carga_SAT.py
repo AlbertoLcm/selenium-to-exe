@@ -250,7 +250,7 @@ def cargar_acuses(dato, resultados, driver, contador, intento=1, max_intentos=3)
 
     except Exception as e:
         print(f"{contador} - {dato['Folio']}: Error en intento {intento} - {str(e)}")
-        print(f'{contador} - {dato['Folio']}: Intentando de nuevo...')
+        print(f"{contador} - {dato['Folio']}: Intentando de nuevo...")
 
         # Borramos todas las ventanas excepto la 0 y 1, despues volvemos a la 1
         all_ventanas = driver.window_handles
