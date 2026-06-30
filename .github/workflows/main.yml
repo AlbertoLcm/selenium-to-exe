@@ -1,0 +1,46 @@
+# Flujo de trabajo de GitHub Actions para compilar un script de Python (RPA con Selenium) en un archivo .exe
+name: Compilar Script Python a EXE
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: # Permite ejecutar la compilación manualmente desde la pestaña Actions
+
+jobs:
+  build:
+    runs-on: windows-latest # Obligatorio usar Windows para generar un .exe nativo
+
+    steps:
+    - name: Descargar el código del repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar entorno de Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Define aquí la versión de Python que utiliza tu script
+        cache: 'pip' # Optimiza el tiempo de ejecución guardando en caché las dependencias
+
+    - name: Instalar dependencias del proyecto
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium pyinstaller
+        # Si tienes un archivo requirements.txt, descomenta la línea de abajo:
+        # pip install -r requirements.txt
+
+    - name: Compilar script a ejecutable (.exe) con PyInstaller
+      run: |
+        pyinstaller --onefile --console Carga_SAT.py
+        # NOTAS DE CONFIGURACIÓN:
+        # 1. Cambia 'main.py' por el nombre real de tu archivo principal.
+        # 2. '--onefile' empaqueta todo en un único archivo ejecutable.
+        # 3. '--noconsole' oculta la ventana de la terminal negra (ideal para RPA silenciosos). 
+        #    Si necesitas ver los prints de depuración en la terminal, cambia '--noconsole' por '--console'.
+
+    - name: Guardar y subir el archivo ejecutable (.exe) como artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: RPA-Selenium-Ejecutable
+        path: dist/Carga_SAT.exe # Cambia 'main.exe' si tu script se llama de otra forma
+        retention-days: 5 # Tiempo que el archivo estará disponible para descargar
