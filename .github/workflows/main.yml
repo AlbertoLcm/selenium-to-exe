@@ -31,7 +31,7 @@ jobs:
 
     - name: Compilar script a ejecutable (.exe) con PyInstaller
       run: |
-        pyinstaller --onefile --console Carga_SAT.py
+        pyinstaller --onefile --console bot-MEDC.py
         # NOTAS DE CONFIGURACIÓN:
         # 1. Cambia 'main.py' por el nombre real de tu archivo principal.
         # 2. '--onefile' empaqueta todo en un único archivo ejecutable.
@@ -42,5 +42,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: RPA-Selenium-Ejecutable
-        path: dist/Carga_SAT.exe # Cambia 'main.exe' si tu script se llama de otra forma
+        path: dist/bot-MEDC.exe # Cambia 'main.exe' si tu script se llama de otra forma
         retention-days: 5 # Tiempo que el archivo estará disponible para descargar
